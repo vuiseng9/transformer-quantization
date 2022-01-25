@@ -234,7 +234,7 @@
                 "--save-model", 
                 "--model-name", "bert_base_uncased", 
                 "--task", "rte", 
-                "--learning-rate", "3e-05", 
+                "--learning-rate", "2e-05", 
                 "--batch-size", "8", 
                 "--eval-batch-size", "8", 
                 "--num-epochs", "3", 
