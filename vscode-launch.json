@@ -91,7 +91,7 @@
             ]
         },
         {
-            "name": "PEG-AQ PTQ RTE", 
+            "name": "PEG-AQ PTQ RTE FFN only, k=6", 
             "type": "python",
             "request": "launch",
             "justMyCode": false,
@@ -127,7 +127,7 @@
             ]
         },
         {
-            "name": "PTQ W8A{8,16} RTE", 
+            "name": "PTQ W8A8 FFN16 RTE", 
             "type": "python",
             "request": "launch",
             "justMyCode": false,
@@ -162,6 +162,76 @@
             ]
         },
         {
+            "name": "PTQ W32A8 RTE - override FFN activation to 32bit", 
+            "type": "python",
+            "request": "launch",
+            "justMyCode": false,
+            "env": {
+                "CUDA_VISIBLE_DEVICES": "0",
+                // "CUDA_LAUNCH_BLOCKING": "1",
+                // "PYTHONPATH": "${workspaceFolder}/transformer-quantization",
+            },
+            "cwd": "${workspaceFolder}/transformer-quantization",
+            "program": "main.py",
+            "args": [
+                "validate-quantized", 
+                "--act-quant", 
+                "--no-weight-quant", // take note of this
+                "--no-pad-to-max-length", 
+                "--est-ranges-no-pad", 
+                "--eval-batch-size", "16", 
+                "--seed", "1000", 
+                "--model-path", "/tmp/vscode-runs/qcom-peg/saved_models/", 
+                "--task", "rte", 
+                // "--n-bits", "8", not required for FP32 weight
+                "--n-bits-act", "8", 
+                "--qmethod", "symmetric_uniform", // Error out if not provided
+                "--qmethod-act", "asymmetric_uniform", 
+                // "--weight-quant-method", "MSE", not required for FP32 weight
+                // "--weight-opt-method", "golden_section", not required for FP32 weight
+                "--act-quant-method", "current_minmax", 
+                "--est-ranges-batch-size", "1",  
+                "--num-est-batches", "1", 
+                "--quant-setup", "all",
+                "--quant-dict", "{\"y\": 32, \"h\": 32, \"x\": 32}"
+            ]
+        },
+        {
+            "name": "PTQ W32A8 RTE", 
+            "type": "python",
+            "request": "launch",
+            "justMyCode": false,
+            "env": {
+                "CUDA_VISIBLE_DEVICES": "0",
+                // "CUDA_LAUNCH_BLOCKING": "1",
+                // "PYTHONPATH": "${workspaceFolder}/transformer-quantization",
+            },
+            "cwd": "${workspaceFolder}/transformer-quantization",
+            "program": "main.py",
+            "args": [
+                "validate-quantized", 
+                "--act-quant", 
+                // "--weight-quant", 
+                "--no-weight-quant",
+                "--no-pad-to-max-length", 
+                "--est-ranges-no-pad", 
+                "--eval-batch-size", "16", 
+                "--seed", "1000", 
+                "--model-path", "/tmp/vscode-runs/qcom-peg/saved_models/", 
+                "--task", "rte", 
+                // "--n-bits", "8", not required for FP32 weight
+                "--n-bits-act", "8", 
+                "--qmethod", "symmetric_uniform", 
+                "--qmethod-act", "asymmetric_uniform", 
+                // "--weight-quant-method", "MSE", not required for FP32 weight
+                // "--weight-opt-method", "golden_section", not required for FP32 weight
+                "--act-quant-method", "current_minmax", 
+                "--est-ranges-batch-size", "1",  
+                "--num-est-batches", "1", 
+                "--quant-setup", "all"
+            ]
+        },
+        {
             "name": "PTQ W8A8 RTE", 
             "type": "python",
             "request": "launch",
@@ -190,13 +260,13 @@
                 "--weight-quant-method", "MSE", 
                 "--weight-opt-method", "golden_section", 
                 "--act-quant-method", "current_minmax", 
-                "--est-ranges-batch-size", "1", 
+                "--est-ranges-batch-size", "1",  
                 "--num-est-batches", "1", 
                 "--quant-setup", "all"
             ]
         },
         {
-            "name": "Validate RTE", 
+            "name": "Evaluate (validate) on finetuned Bert-base RTE", 
             "type": "python",
             "request": "launch",
             "justMyCode": false,
@@ -217,7 +287,7 @@
             ]
         },
         {
-            "name": "Fine Tuning RTE", 
+            "name": "Finetune bert-base-uncased on RTE", 
             "type": "python",
             "request": "launch",
             "justMyCode": false,
